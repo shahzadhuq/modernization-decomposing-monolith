@@ -4,9 +4,9 @@
 
 ## Core Problems to Solve
 
-1. Most customers can figure out where to start, what to retire, or replace.
+1. Commonly customers can figure out where to start, what to retire, or replace.
 
-1. Majority struggles with figuring out an approach to achieve enables balance and maximize output of their bandwidth. Example:
+1. Where customer might struggle is figuring out the right approach to achieve enables balance and maximize their limited bandwidth. Example:
     1. How do I continue to ship features and bug fixes for the monolith?
     2. How do I maximize sharing codebase b/t monolith and modernized version?
     3. How do the monolith and modernized versions co-exist w/out breaking anything?
@@ -60,3 +60,45 @@
 1. Once all monolith codebase is converted to modernized version then deploy, test, and finally cut over to Linux (Graviton/x86).
     1. Use ALB or API Gateway to direct traffic across monolith and modernized components.
 1. Continue to ship features and bug fixes for Monolith, build modernized version, and maximize code sharing.
+
+
+## Appendix
+
+### Strangler Fig Pattern
+
+#### Concept
+Commonly, this pattern is used to to migrate from one monolithic system to another. You use it to migrate from a monolith to modular service architecture.
+
+There are three primary steps:
+
+1. First, identify sub-components of the monolith to modernize.
+1. Second, modernize these components; either port as is or re-write the functionality.
+1. Third, reroute traffic for these components from monolith to the modernized versions.
+
+![Strangler Fig Pattern](./diagrams/strangler-fig-pattern.png)
+
+#### Benefits
+- Without directing any traffic, we can build the modernized version along side the monolith.
+- Deploy modernized component to Production, perform test parallel to monolith, and validate functional behavior.
+- Finally, release the modernized component; cut the traffic over - via `HTTP Proxy` - from monolith to the modernized component.
+
+> **Deploy vs Release**: Deploy: only push to Production and validate its functionality. When ready to be consumed by the end user, we can release it (goes live).
+
+Be mindful:
+- "The strangler Fig pattern doesn’t work too well when the functionality to be moved is deeper inside the existing system."
+- Example:
+![Strangler Fig Pattern](./diagrams/strangler-fig-pattern-unfit.png)
+
+#### Steps
+
+[1]: Incorporate `HTTP Proxy`
+
+1. If HTTP Proxy is new to the ecosystem, then simply integrate with the existing system.
+1. This helps 1/ assessing impact of adding network hop and acceptable latency and 2/ ensuring the system still works as expected.
+
+[2]: Deploy Modernized Component (not release!)
+
+1. Get the basic component deployed to production. For example, component shell w/out any functionality.
+    a. You want to become comfortable deploying to Production through your CI/CD pipelines.
+1. Now, push functionality over
+1. 
