@@ -24,8 +24,9 @@
 1. Visualizing monolith as a tree, start with leaves (i.e. edge nodes); components with minimal incoming dependencies.
 1. For the first round of component selection, go after high business value. You want to showcase the benefits of the investment.
     1. You want the team to build a blueprint: 1/ confidence in modernization approach, 2/ stand-up the necessary infrastructure, establish observability approach for your distributed system, and 4/ build out the continuous delivery mechanism.
-1. Ideally, ring-fence the initial set off components to modernize by unit of business function. 
+1. Ideally, ring-fence the initial set off components to modernize by unit of business function.
     1. Approaches like Domain Drive Design or Event Storming can help define these. But these do require time investment across SMEs working collaboratively: developers, architects, business SMEs, QA, and UX.
+1. Overall, keep the modernization in small increments. The longer it takes to modernize, the more pressure/risk you may incur to allow behavioral changes (e.g. bug fixes  
 1. Good to have:
     1. Strong unit/integration test coverage which an be used to validate the modernized components.
 
@@ -61,44 +62,18 @@
     1. Use ALB or API Gateway to direct traffic across monolith and modernized components.
 1. Continue to ship features and bug fixes for Monolith, build modernized version, and maximize code sharing.
 
-
 ## Appendix
 
-### Strangler Fig Pattern
+### Tips
 
-#### Concept
-Commonly, this pattern is used to to migrate from one monolithic system to another. You use it to migrate from a monolith to modular service architecture.
+1. Prior to component modernization, ensure to discuss and adapt a development strategy that works best for you. Common approaches:
+    1. Trunk based development with feature flags.
+    1. Short lived feature branch.
 
-There are three primary steps:
+    End goal is to not keep the changes on an island and then dealing with reconciliation pains; merging back to master.
 
-1. First, identify sub-components of the monolith to modernize.
-1. Second, modernize these components; either port as is or re-write the functionality.
-1. Third, reroute traffic for these components from monolith to the modernized versions.
+### Resources
 
-![Strangler Fig Pattern](./diagrams/strangler-fig-pattern.png)
-
-#### Benefits
-- Without directing any traffic, we can build the modernized version along side the monolith.
-- Deploy modernized component to Production, perform test parallel to monolith, and validate functional behavior.
-- Finally, release the modernized component; cut the traffic over - via `HTTP Proxy` - from monolith to the modernized component.
-
-> **Deploy vs Release**: Deploy: only push to Production and validate its functionality. When ready to be consumed by the end user, we can release it (goes live).
-
-Be mindful:
-- "The strangler Fig pattern doesn’t work too well when the functionality to be moved is deeper inside the existing system."
-- Example:
-![Strangler Fig Pattern](./diagrams/strangler-fig-pattern-unfit.png)
-
-#### Steps
-
-[1]: Incorporate `HTTP Proxy`
-
-1. If HTTP Proxy is new to the ecosystem, then simply integrate with the existing system.
-1. This helps 1/ assessing impact of adding network hop and acceptable latency and 2/ ensuring the system still works as expected.
-
-[2]: Deploy Modernized Component (not release!)
-
-1. Get the basic component deployed to production. For example, component shell w/out any functionality.
-    a. You want to become comfortable deploying to Production through your CI/CD pipelines.
-1. Now, push functionality over
-1. 
+- [Blog] - [Branch by abstraction pattern](https://continuousdelivery.com/2011/05/make-large-scale-changes-incrementally-with-branch-by-abstraction/)
+- [Blog] - [Feature flag toggle approach - v1](https://martinfowler.com/articles/feature-toggles.html)
+- [Blog] - [Feature flag toggle approach - v2](https://www.cloudbees.com/blog/future-of-feature-flags)
