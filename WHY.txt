@@ -1,0 +1,13 @@
+Article Goals
+- Help customers understand the common problems they will face during the modernization journey.
+- In plain english, explain different patterns to solve each type of problems.
+- Use specific examples and diagrams to walk-through pattern implementation and hammer home the message.
+
+Target Audience
+- Architects and developers.
+- May their higher ups.
+
+Take Away Values
+- Customer are better informed about which problems to anticipate.
+- Customer are well equipped with patterns to apply to solve different problems.
+- Customer will have a generalized blueprint to follow for their own implementation.
