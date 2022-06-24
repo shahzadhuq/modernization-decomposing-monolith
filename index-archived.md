@@ -30,7 +30,7 @@ Sections below will provide guidance to help solve these common problems.
 Following steps should be the starting point for any modernization approach.
 
 1. Start with the analysis of your monolith (yes, captain obvious here!)
-    1. Build out a dependency graph that shows 1/ breakdown of monolith's components (your services and 3rd party libraries) and 2/ relationships across components.
+    1. Build out a dependency graph that shows 1/ breakdown of its components (your services and 3rd party libraries) and 2/ relationships across components.
     1. Analyze portability of these components to .NET Standard 2.0 and .NET Core.
     1. Identify component owners in your organization to 1/ confirm your analysis and 2/ coordinate modernization timelines.
 
@@ -61,20 +61,38 @@ Following steps should be the starting point for any modernization approach.
 
 1. Continue to ship features and bug fixes for Monolith, build modernized version, and maximize code sharing.
 
+### [Modernization Approach #2] - In-place first
+
+1. In place, try to get the shared class libraries - internal services and 3rd party - target .NET Standard 2.0.
+    1. This will allow code-sharing among monolith app (e.g .NET Framework) and the modernized version (e.g. .NET Core).
+
+1. In place, piece meal sub-components and port them over to .NET Core monolith (.NET Framework) --> modernize (.NET Core).
+
+1. Then use Strangler Fig pattern to modernize components iteratively.
+
+1. Continue to ship features and bug fixes for Monolith, build modernized version, and maximize code sharing.
+
+### [Modernization Approach #3] - All In-place
+
+1. In place, piece meal sub-components monolith (.NET Framework) --> modernize (.NET Core).
+1. Once all monolith codebase is converted to modernized version then deploy, test, and finally cut over to Linux (Graviton/x86).
+    1. Use ALB or API Gateway to direct traffic across monolith and modernized components.
+1. Continue to ship features and bug fixes for Monolith, build modernized version, and maximize code sharing.
+
 ## Appendix
 
 ### Tips
 
-1. Prior to component modernization, ensure to discuss and adapt a development strategy that works best for your organization. Common approaches:
-
+1. Prior to component modernization, ensure to discuss and adapt a development strategy that works best for you. Common approaches:
     1. Trunk based development with feature flags.
     1. Short lived feature branch.
 
-    End goal is to avoid keeping your changes on an island for a long time and then deal with reconciliation pains; merging back to master.
+    End goal is to not keep the changes on an island and then dealing with reconciliation pains; merging back to master.
 
 1. If you’re still maintaining the ASP.NET app, it may be helpful to avoid static references to ConfigurationManager and replace them with access through interfaces. This will ease the transition to ASP.NET Core’s configuration system.
+1. Logging:
 
-1. Logging: You can reference the Microsoft.Extensions.Logging package from .NET Framework apps as long as they’re using NuGet 4.3 or later and are on .NET Framework 4.6.1 or later. Once your app has referenced this package, you can convert your logging statements to use the new extensions before migrating the app to .NET Core.
+You can reference the Microsoft.Extensions.Logging package from .NET Framework apps as long as they’re using NuGet 4.3 or later and are on .NET Framework 4.6.1 or later. Once your app has referenced this package, you can convert your logging statements to use the new extensions before migrating the app to .NET Core.
 
 ### Resources
 
