@@ -6,9 +6,9 @@ Commonly, Strangler Fig pattern is used to migrate from one monolithic system to
 
 Strangler Fig pattern involves three primary steps:
 
-1. First, identify subset of the monolith components to modernize.
-1. Second, modernize these components. Example, port as is or re-write the functionality.
-1. Third, reroute traffic for these components, from monolith to the modernized versions.
+1. First, identify subset of the monolith components to modernize; ones with minimal to no incoming dependencies.
+1. Second, perform the modernization: 1/ port the functionality as is or re-write it and 2/ validate the functional behavior.
+1. Third, slowly reroute traffic for these components, from monolith to the modernized version.
 
   ![Strangler Fig Pattern](../diagrams/strangler-fig-pattern.png)
 
