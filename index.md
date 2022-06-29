@@ -17,7 +17,7 @@ Let's review some common hurdles that Enterprises face on their modernization jo
 
 Sections below will provide suggestions to help solve these common problems.
 
-## Decomposed Monolith to Modular Services
+## Decomposing Monolith to Modular Services
 
 ### Baseline
 
@@ -49,8 +49,8 @@ Following steps should be the starting point for any modernization approach.
 
 ### Modernization Patterns
 
-1. User [Strangler Fig](./modernization-patterns/1-strangler-fig-pattern.md) pattern to modernize monolith components with minimal to no incoming dependencies.
-1. User [Branch by Abstraction](./modernization-patterns/2-branch-by-abstraction.md) pattern to modernize monolith components that are deeper in the call stack; do have incoming dependencies.
+1. Use [Strangler Fig](./modernization-patterns/1-strangler-fig-pattern.md) pattern to modernize monolith components with minimal to no upstream dependencies.
+1. Use [Branch by Abstraction](./modernization-patterns/2-branch-by-abstraction.md) pattern to modernize monolith components that are deeper in the call stack with upstream dependencies.
 
 ## Appendix
 
