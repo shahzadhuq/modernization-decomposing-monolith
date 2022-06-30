@@ -18,17 +18,17 @@ TL;DR:
 
 ## Pattern Execution Process
 
-1. Create an abstraction layer (e.g. Interface in C#) on top of the component you plan to replace.
-    1. Also, make the existing clients call the abstraction layer instead of the original component. This could happen in multiple commits.
+1. Create an abstraction layer for the component to be replaced (e.g. in C#, an Interface).
+    1. Change clients of the existing component to use the new abstraction. This could happen in multiple commits.
 
     ![branch-by-abstraction-add-interface](../diagrams/branch-by-abstraction-add-interface.png)
 
-1. Create new modernized version (i.e. concrete implementation of the abstraction layer).
+1. Create a new implementation of the abstraction (i.e. in C#, a concrete implementation of the Interface) with the reworked functionality.
     1. While modernized version being developed and tested, it continues to live along the existing implementation.
 
     ![branch-by-abstraction-implement-interface](../diagrams/branch-by-abstraction-implement-interface.png)
 
-1. When ready, switch the abstraction's implementation to use the modernized version.
+1. When ready, have clients switch over abstraction to use the new implementation.
 
     ![branch-by-abstraction-switch-traffic](../diagrams/branch-by-abstraction-switch-traffic.png)
 
