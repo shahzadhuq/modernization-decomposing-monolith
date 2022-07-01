@@ -1,32 +1,38 @@
 # Branch by Abstraction (i.e. Interface & Concrete Implementation)
 
-Branch by Abstraction pattern is commonly used to modernize monolith components by breaking changes over multiple commits and avoid breaking the existing system.
-It's best suited to modernize component with upstream (i.e. incoming) dependencies.
+This pattern is commonly used to modernize components that exists deeper in the monolith stack, with upstream dependencies (i.e. clients). This pattern relies on making changes to the existing codebase to allow the implementations to safely coexist alongside each other, in the same version of code, without causing too much disruption.
 
-TL;DR:
+For example, using Strangler Fig pattern would require changes to upstream clients - changes to other parts of the codebase - which would be disruptive to other developers. 
 
-1. First, identify monolith components with upstream dependencies.
-1. Second, for this component: 1/ introduce abstraction and 2/ restructure existing system to use the abstraction.
-1. Third, alongside the old, create new concrete implementation: either port to .NET Core or re-write it.
-1. Fourth, switch traffic from old to new implementation.
+In the example diagram below, Branch by Abstraction pattern will work well for Notification component.
+
+![branch-by-abstraction-tldr](../diagrams/branch-by-abstraction-tldr.png)
+
+**How It Works (TL;DR)**
+
+1. Identify monolith components with upstream dependencies.
+1. Create an abstraction layer for the component to be replaced and the system restructured to use this abstraction.
+1. Alongside the old, create new implementation.
+1. Switch over the abstraction to new implementation.
 
 ## Pattern Benefits
 
-1. Allows making changes in an incremental way while keeping the system running at all times. Enables continuous delivery.
-1. Since the system keeps on working, you could choose to release a working version of the system containing a half-completed migration.
-1. Release schedule is completely decoupled from your architectural changes, thus, you can stop working on the restructuring at any point to do something else that is higher priority.
+1. Allows making changes in small increments while keeping the system running at all times. Enables continuous delivery.
+1. Since the system keeps on working, you could choose to release a working version of the system containing a half-completed modernization.
+1. Release schedule is completely decoupled from your architectural changes. You can stop working on the restructuring at any point to do something else that is higher priority.
 
 ## Pattern Execution Process
 
-1. Create an abstraction layer for the component to be replaced (e.g. in C#, an Interface).
-    1. Change clients of the existing component to use the new abstraction. This could happen in multiple commits.
+1. Create an abstraction layer that represents the interactions between the code to be modernized and its clients (the callers of this code.). For example, in C#, create an Interface based on the existing functionality that you want to modernize.
 
     ![branch-by-abstraction-add-interface](../diagrams/branch-by-abstraction-add-interface.png)
 
-1. Create a new implementation of the abstraction (i.e. in C#, a concrete implementation of the Interface) with the reworked functionality.
-    1. While modernized version being developed and tested, it continues to live along the existing implementation.
+1. With the abstraction in place, in small increments, you need to change the existing clients to use the new abstraction. This may require searching your codebase for calls being made to APIs related to the notification component.
 
     ![branch-by-abstraction-implement-interface](../diagrams/branch-by-abstraction-implement-interface.png)
+
+1. Create a new implementation of the abstraction (i.e. in C#, a concrete implementation of the Interface) with the reworked functionality.
+    1. While modernized version being developed and tested, it continues to live along the existing implementation.
 
 1. When ready, have clients switch over abstraction to use the new implementation.
 

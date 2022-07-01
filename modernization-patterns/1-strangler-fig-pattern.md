@@ -12,13 +12,13 @@ First captured by Martin Fowler, who was inspired by a certain type of fig that 
 <details>
 <summary>click to expand</summary>
 
-This pattern is commonly used to incrementally replace a legacy system - component by component - with a modernized version. The idea is that the old and the new will coexist and new system initially be supported by, and wrapping, the existing system. This will give the new system time to grow and potentially entirely replace the old system. 
+This pattern is commonly used to incrementally replace a legacy system - component by component - with a modernized version. The idea is that the old and the new will co-exist and new system initially be supported by, and wrapping, the existing system. This will give the new system time to grow and potentially entirely replace the old system. 
 
-For the strangler to work well, you need to be able to easily redirect (e.g. API Gateway) the inbound calls - *from outside the system* - for functionality you care about to the asset that you want to move.
+For the strangler to work well: 1/ you need to be able to intercept outside the system calls at the perimeter of your monolith and 2/ easily redirect the inbound calls for functionality you care about to the asset that you want to move.
 
-For example, Strangler Fig pattern will work well for Product, Order, Billing, and Invoicing components shown in the diagram below. You can redirect outside the system inbound HTTP calls to their modernized version. 
+In the example diagram below, Strangler Fig pattern will work well for Product, Order, Billing, and Invoicing components. You can intercept and redirect outside the system inbound HTTP calls to their modernized version. 
 
-For Notification component, this pattern would not work well. Because notifications are fired as a result of multiple inbound calls to the existing monolith. Therefore, you can’t clearly redirect the calls from outside the system itself. Another pattern called [Branch by Abstraction](./2-branch-by-abstraction.md) would work well (discussed later).
+On the Contrary, Strangler Fig pattern would not work well for Notification component. Because notifications are fired as a result of multiple inbound calls to the existing monolith. Therefore, you can’t clearly redirect the calls from outside the system itself. Another pattern called [Branch by Abstraction](./2-branch-by-abstraction.md) would work well (discussed later).
 
 ![strangler fig pattern tldr](../diagrams/strangler-fig-pattern-tldr.png)
 
@@ -72,39 +72,45 @@ For Notification component, this pattern would not work well. Because notificati
 
     ![strangler-fig-identify-component](../diagrams/strangler-fig-identify-component.png)
 
-1. Incorporate HTTP Proxy (e.g API Gateway) to help control the incoming traffic (e.g. direct between monolith/modernized versions).
+1. Incorporate HTTP Proxy (e.g API Gateway) to help control the incoming traffic (e.g. switch between monolith/modernized versions).
 
-    1. If Proxy is new to the ecosystem, then integrate one; as simple pass through.
-    1. Pass through approach will help you with: 1/ assess impact of adding network hop and acceptable latency and 2/ ensure the system continues to operate as before.
+    1. If Proxy is new to the ecosystem, then integrate one, as simple pass through.
+    1. Pass through approach will help you: 1/ assess impact of adding network hop and acceptable latency and 2/ ensure the system continues to operate as before.
 
     ![strangler-fig-http-proxy](../diagrams/strangler-fig-http-proxy.png)
 
-    > [Tip] - Follow the mantra of “smart endpoints, dumb pipes". Avoid injecting business logic into proxy pipes (e.g. translate among protocol JSON-->gRPC); thus, converting this Proxy into yet another shared smart middleware pipe.
+    **Be mindful**
+    1. Follow the mantra of “smart endpoints and dumb pipes". You're optimizing for independent deployability of your services and converting this Proxy into yet another *shared* smart middleware pipe could slow down the process of making and deploying changes quickly.
+    1. One alternative could be to push any protocol translation into the service itself (e.g. JSON-->gRPC).
+    1. Another alternative is service mesh: each service instance communicates with other service instances via its own, dedicated local proxy. Local proxy helps avoid creating a shared smart pipe and each service can own its own piece of the service-to-service pipe as needed.
+
+        ![strangler-fig-service-mesh](../diagrams/strangler-fig-service-mesh.png)
+
+1. Get a basic component up and running without any functionality being implemented.
+    1. Component should accept calls made to the match the functionality but at this point you can return 501, Not Implemented. 
+    1. Optionally, you could get this component deployed to production. This will help you become comfortable with production push process through your CI/CD pipelines. Its not released yet (gone live).
 
 1. Iteratively modernize component's functionality. Example:
-    1. Port its codebase from .NET to .NET Core, targeting Linux (ARM or x86).
+    1. Modernize (port or re-write) component's functionality from .NET Framework to .NET Core, targeting Linux (ARM or x86).
     1. Reference common libraries via NuGet packages.
-    1. As applicable, containerize the component (e.g. Docker).
-    1. Validate against your unit/integration tests.
+    1. Containerize the component (e.g. Docker).
+    1. As you continue to build out the modernized component, you can iteratively start pushing it to production and validate that its working as expected.
 
     ![strangler-fig-modernize-component](../diagrams/strangler-fig-modernize-component.png)
 
-    > [Tip] - While porting, ensure any functionality rewrites are small - doable over few days or weeks - and ship this reworked functionality to your customers regularly. If the timelines start to look more like several months, you should reexamine your approach.
-
-1. Deploy modernized component (not release yet!)
-
-    1. Deploy the component to production. For example, component shell w/out any functionality.
-        a. You want to become comfortable deploying to Production through your CI/CD pipelines.
-    1. As you continue to build out the modernized component, you can iteratively start pushing it to production and validate that its working as expected.
+    > [Tip] - While porting, ensure any functionality rewrites are small - doable over few days or weeks - and you could ship this reworked functionality to your customers regularly. If the timelines start to look more like several months, you should reexamine your approach.
 
 1. Redirect Calls
 
-    1. Modernized component is fully built, tested, and deployed to production and ready to go live!
-    1. Following are some common approaches to direct traffic to the modernized component:
-        1. Configure the HTTP Proxy to redirect calls to the modernized component.
+    1. Modernized component is fully built, tested, and deployed to production and ready to go live! Also, leave the monolith in place as fallback.
+    1. Configure the HTTP Proxy to redirect calls to the modernized component.
+
+        ![strangler-fig-switch-traffic](../diagrams/strangler-fig-switch-traffic.png)
+    
+    1. Other common approaches:
         1. Use Feature flags.
-        1. Or run it alongside the monolith to ensure its outputs matches the existing functionality.
-  
-    ![strangler-fig-switch-traffic](../diagrams/strangler-fig-switch-traffic.png)
+        1. Canary deployment.
+        1. Parallel run alongside the monolith to ensure its outputs matches the existing functionality.
+
 
 </details>

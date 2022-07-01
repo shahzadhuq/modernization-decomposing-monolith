@@ -1,8 +1,14 @@
 # Objectives
 
-Modernizing a Monolith application is a journey of consistent iterative takes and not a big bang. There is no silver bullet or perfect approach or perfect architecture. It's about moving forward with the trade-offs that work best for your organization.
+Modernizing a Monolith application is a journey of consistent and iterative takes rather than a big bang. There is no silver bullet or perfect approach or perfect architecture. It's about moving forward with the trade-offs that work best for your organization.
 
-This module helps you plan this journey in ways that you can continue to support the existing business (i.e. monolith app) and achieve value driven progress towards your modernization goals.
+Below we will discuss recommendations to plan your journey in ways that you can continue to support the existing business (i.e. monolith app) and achieve value driven progress towards your modernization goals.
+
+## Modernization Approach Tenets
+
+1. With minimal to no risk, quickly build confidence in your modernization approach.
+1. Minimize disruptions to other developers working in parallel on the existing system.
+1. Ability to continuously show modernization value with the flexibility to pause/stop modernization while retaining the investment.
 
 ## Common Problems to Solve
 
@@ -17,11 +23,13 @@ Let's review some common hurdles that Enterprises face on their modernization jo
 
 Sections below will provide suggestions to help solve these common problems.
 
-## Decomposing Monolith to Modular Services
-
-### Baseline
+## Modernization Baseline
 
 Following steps should be the starting point for any modernization approach.
+
+1. Overall, follow the mantra of "modernization in small increments".
+    1. While modernizing, delay or freeze any functional or behavioral changes. Otherwise, you will have to accept that roll-backs would become harder.
+    1. Also, the longer it takes to modernize components, the more pressure/risk you may incur to allow behavioral changes into the monolith version of the component (e.g. bug fixes).
 
 1. Start with the analysis of your monolith (yes, captain obvious here!)
     1. Build out a dependency graph that shows 1/ breakdown of monolith's components (your services and 3rd party libraries) and 2/ relationships across components.
@@ -43,11 +51,7 @@ Following steps should be the starting point for any modernization approach.
 1. Strongly recommended: Adequate unit/integration test coverage to help validate the modernized components and include in your automation (CI).
     1. Adequate test coverage is a common challenge. In absence of test coverage, ensure to incorporate ample manual functional validation time in your modernization planning.
 
-1. Overall, perform the modernization in small increments.
-    1. Ideally, while modernizing a component, you should freeze any functional or behavioral changes. Otherwise, roll-backs may become much harder.
-    1. Also, longer it takes to modernize components, the more pressure/risk you may incur to allow behavioral changes into the monolith version of the component (e.g. bug fixes).
-
-### Modernization Patterns
+## Modernization Patterns
 
 1. Use [Strangler Fig](./modernization-patterns/1-strangler-fig-pattern.md) pattern to modernize monolith components with minimal to no upstream dependencies.
 1. Use [Branch by Abstraction](./modernization-patterns/2-branch-by-abstraction.md) pattern to modernize monolith components that are deeper in the call stack with upstream dependencies.
@@ -56,12 +60,12 @@ Following steps should be the starting point for any modernization approach.
 
 ### Tips
 
-1. Prior to component modernization, ensure to discuss and adapt a development strategy that works best for your organization. Common approaches:
+1. Prior to modernization, ensure to discuss and adapt a development strategy that works best for your organization. Common approaches:
 
     1. Trunk based development with feature flags.
     1. Short lived feature branch.
 
-    End goal is to avoid keeping your changes on an island for a long time and then deal with reconciliation pains; merging back to master.
+    End goal is to avoid keeping your changes on an island for a long time and then deal with reconciliation pains; merging back to development/master.
 
 1. If you’re still maintaining the ASP.NET app, it may be helpful to avoid static references to ConfigurationManager and replace them with access through interfaces. This will ease the transition to ASP.NET Core’s configuration system.
 
