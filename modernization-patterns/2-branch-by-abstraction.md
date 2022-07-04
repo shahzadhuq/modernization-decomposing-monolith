@@ -29,19 +29,36 @@ In the example diagram below, Branch by Abstraction pattern will work well for N
 
 1. With the abstraction in place, in small increments, you need to change the existing clients to use the new abstraction. This may require searching your codebase for calls being made to APIs related to the notification component.
 
-    ![branch-by-abstraction-implement-interface](../diagrams/branch-by-abstraction-implement-interface.png)
+    Diagram below shows incremental client update.
 
-1. Create a new implementation of the abstraction (i.e. in C#, a concrete implementation of the Interface) with the reworked functionality.
-    1. While modernized version being developed and tested, it continues to live along the existing implementation.
+    ![branch-by-abstraction-incremental-updates](../diagrams/branch-by-abstraction-clients-incremental-updates.png)
 
-1. When ready, have clients switch over abstraction to use the new implementation.
+    Diagram below shows client updates completed.
 
-    ![branch-by-abstraction-switch-traffic](../diagrams/branch-by-abstraction-switch-traffic.png)
+    ![branch-by-abstraction-completed-updates](../diagrams/branch-by-abstraction-clients-completed-updates.png)
+
+1. Create new implementation of the abstraction.
+    1. New implementation will likely exist outside your monolith, hosted under the modernized architecture. 
+    1. Inside your monolith, you will have a client - acting as shell - calling out to the new implementation.
+    1. Build incremental port of Notification functionality, new implementation can continue to stay dormant until tested and ready.
+
+    Diagram below shows the process.
+
+    ![branch-by-abstraction-new-implementation-wip](../diagrams/branch-by-abstraction-new-implementation-wip.png)
+
+1. When ready, switch your abstraction over to use the new implementation.
+    1. You would want to use a switching mechanism that can be toggled easily (e.g. Feature Toggle). In case of any problems, this allows you to quickly switch back to the old functionality.
+
+    ![branch-by-abstraction-new-implementation-switched](../diagrams/branch-by-abstraction-new-implementation-switched.png)
+
+1. When new implementation start to provide all Notification functionality to the users and monolith is no longer in use, you can clean up the older implementation.
+    1. Also, remove any switching feature flag that you may have implemented. 
+
+    ![branch-by-abstraction-new-implementation-completed](../diagrams/branch-by-abstraction-new-implementation-completed.png)
+
+1. Optionally, you could remove the Abstraction layer (Interface).
 
 1. Rinse and repeat the previous steps, shipping your system in the meantime if desired.
-
-1. Once the old implementation is ported into the modernized version, you could remove the old implementation.
-    1. Also, if you want, you could remove the abstraction layer.
 
 ## Comparison vs Other Patterns
 
