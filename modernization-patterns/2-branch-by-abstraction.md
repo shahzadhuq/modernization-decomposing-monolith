@@ -1,19 +1,19 @@
-# Branch by Abstraction (i.e. Interface & Concrete Implementation)
+# Branch by Abstraction Pattern (i.e. Interface & Concrete Implementation)
 
-This pattern is commonly used to modernize components that exists deeper in the monolith stack, with upstream dependencies (i.e. clients). This pattern relies on making changes to the existing codebase to allow the implementations to safely coexist alongside each other, in the same version of code, without causing too much disruption.
-
-For example, using Strangler Fig pattern would require changes to upstream clients - changes to other parts of the codebase - which would be disruptive to other developers. 
+Commonly used to modernize components that exist deeper in the legacy application stack, with upstream dependencies (i.e. clients). This pattern enables you to make changes to the existing codebase to allow the modernized version to safely coexist alongside the legacy version without causing much disruption.
 
 In the example diagram below, Branch by Abstraction pattern will work well for Notification component.
 
 ![branch-by-abstraction-tldr](../diagrams/branch-by-abstraction-tldr.png)
 
+On the contrary, using Strangler Fig pattern would require changes to upstream clients - changes to other parts of the codebase - which would be disruptive to other developers. 
+
 **How It Works (TL;DR)**
 
 1. Identify monolith components with upstream dependencies.
-1. Create an abstraction layer for the component to be replaced and the system restructured to use this abstraction.
-1. Alongside the old, create new implementation.
-1. Switch over the abstraction to new implementation.
+1. Create an abstraction layer for the component to be replaced and restructure the system to use this abstraction.
+1. Along the existing implementaiton, incrementally create new implementation (port functionlity over).
+1. When ready, switch abstraction over to new implementation.
 
 ## Pattern Benefits
 
@@ -21,7 +21,7 @@ In the example diagram below, Branch by Abstraction pattern will work well for N
 1. Since the system keeps on working, you could choose to release a working version of the system containing a half-completed modernization.
 1. Release schedule is completely decoupled from your architectural changes. You can stop working on the restructuring at any point to do something else that is higher priority.
 
-## Pattern Execution Process
+## Pattern Execution Walkthrough
 
 1. Create an abstraction layer that represents the interactions between the code to be modernized and its clients (the callers of this code.). For example, in C#, create an Interface based on the existing functionality that you want to modernize.
 
@@ -37,7 +37,7 @@ In the example diagram below, Branch by Abstraction pattern will work well for N
 
     ![branch-by-abstraction-completed-updates](../diagrams/branch-by-abstraction-clients-completed-updates.png)
 
-1. Create new implementation of the abstraction.
+1. Create new implementation (modernized version) of the abstraction.
     1. New implementation will likely exist outside your monolith, hosted under the modernized architecture. 
     1. Inside your monolith, you will have a client - acting as shell - calling out to the new implementation.
     1. Build incremental port of Notification functionality, new implementation can continue to stay dormant until tested and ready.
