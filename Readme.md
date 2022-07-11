@@ -28,7 +28,7 @@ Let's review common hurdles that Enterprises may face on their modernization jou
 
 1. Additional hurdles to be mindful off (not covered here)
     1. Transition Authentication/Authorization from home grown solutions to a managed Identity Provider (e.g. Okta).
-    1. Move database access layers towards modern object-relational mapper (ORM) frameworks like Entity Framework Core.
+    1. Move database access layer towards object-relational mapper (ORM) frameworks like Entity Framework Core.
 
 Sections below will provide suggestions to help address these common problems.
 </details>
@@ -58,13 +58,13 @@ Following steps should be the starting point to plan your modernization journey.
 1. From the analysis graph tree, identify leafs as the starting point; component(s) with minimal incoming dependencies.
     1. You want the team to quickly build a modernization blueprint: 1/ gain confidence in porting approach (e.g. .NET Framework 4.7 -to- .NET LTS), 2/ stand-up necessary infrastructure, 3/ establish an observability approach for your distributed system, and 4/ build out the DevOps mechanisms to enable Continuous Integration (CI) and Continuous Deployment (CD).
 
-1. Also, for first round of components selection, go after high business value. Modernization value should help ensure your company continues to invest in it.
+1. Also, for first round of components selection, go after high business value. This should help ensure your company continues to invest in modernization efforts.
 
 1. Optionally, where possible, ring-fence the components to modernize by business domain (unit of function).
     1. Approaches like Domain Drive Design or Event Storming can help define the boundaries. These approaches do require time investment across SMEs working collaboratively: developers, architects, business SMEs, QA, and UX.
 
-1. Strongly recommended: Adequate unit/integration test coverage to help validate the modernized components and include in your automation (CI).
-    1. Adequate test coverage is a common challenge. In its absence, ensure to incorporate ample manual functional validation time in your modernization planning.
+1. Strongly recommended: Adequate unit/integration test coverage to help validate the modernized components and incorporate in your automation (CI).
+    1. Adequate test coverage is a common challenge. In its absence, ensure to plan for ample manual functional validation time for your modernization journey.
 
 </details>
 
@@ -75,9 +75,7 @@ Following steps should be the starting point to plan your modernization journey.
 <details>
 <summary>click to expand</summary>
 
-With the modernize baseline in placed (discussed above), pick one or mix the modernization patterns.
-
-Following is TL;DR for each pattern.
+With the modernize baseline in place (discussed above), pick one or mix the modernization patterns below.
 
 - **Strangler Fig**
   - When to use it: Suitable to modernize component with 1/ minimal to no upstream dependencies and 2/ outside system calls can be intercepted at the perimeter.
@@ -122,16 +120,13 @@ Following is TL;DR for each pattern.
 <details>
 <summary>click to expand</summary>
 
-### Resources
-
 - [Blog] - [Branch by abstraction pattern](https://continuousdelivery.com/2011/05/make-large-scale-changes-incrementally-with-branch-by-abstraction/)
 - [Blog] - [Feature flag toggle approach - v1](https://martinfowler.com/articles/feature-toggles.html)
 - [Blog] - [Feature flag toggle approach - v2](https://www.cloudbees.com/blog/future-of-feature-flags)
-
-- Tools
-  - Scientist.NET ([gitHub](https://github.com/scientistproject/Scientist.net)):
+- [Tool] - [AWS .NET Microservice Extractor](https://aws.amazon.com/microservice-extractor/): Simplifies the process of refactoring applications into independent services.
+- [Tool] - [Scientist.NET (gitHub link)](https://github.com/scientistproject/Scientist.net):
   A .NET Port of the *Scientist library* designed to perform experiments comparing multiple implementations of a solution to each other without introducing adverse effects to end users.
 
-    > Use this tool only for code that does not have any side-effects.
+- [Tool] - [Visual Recode (paid product link)](https://visualrecode.com/): Tool to help upgrade WCF to gRPC for .NET Core.
 
 </details>
