@@ -3,10 +3,10 @@
 Modernizing legacy application is a journey of consistent and iterative takes rather than a big bang. Your modernization journey should adhere to following tenets:
 
 - With minimal to no risk, quickly build confidence in your modernization approach (i.e. blueprint).
-- Minimize disruptions to other developers working in parallel on the existing system.
+- Minimize disruptions to other developers working in parallel on your existing system.
 - Continuously show incremental modernization gains with the flexibility to pause/stop modernization while retaining the investment.
 
-To help with your modernization journey, you will learn about two modernization patterns: 1/ Strangler Fig and 2/ Branch by Abstraction
+To help achieve these goals, in this module you will learn about baseline approach to modernization and two modernization patterns: 1/ Strangler Fig and 2/ Branch by Abstraction.
 
 > Anecdote: There is no silver bullet, perfect architecture, or perfect approach. Avoid analysis paralysis and move forward with trade-offs that work best for your organization.
 
