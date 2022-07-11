@@ -16,6 +16,7 @@ In this module, you will learn about two modernization patterns - Strangler Fig 
 
 <details>
 <summary>click to expand</summary>
+
 Let's review common hurdles that Enterprises face on their modernization journey.
 
 1. Where to start chipping away at the legacy application; identify specific component(s) to modernize first.
@@ -73,25 +74,27 @@ Following steps should be the starting point for any modernization approach.
 
 <details>
 <summary>click to expand</summary>
+
 Following is TL;DR for each pattern.
 
 - **Strangler Fig** ([learn more](./modernization-patterns/1-strangler-fig-pattern.md))
-    - Suitable to modernize component with minimal to no upstream dependencies.
-    - Example
+  - Suitable to modernize component with minimal to no upstream dependencies.
+  - Example
 
-        ![strangler-fig-pattern-tldr](./diagrams/strangler-fig-pattern-tldr.png)
+    ![strangler-fig-pattern-tldr](./diagrams/strangler-fig-pattern-tldr.png)
 
 - **Branch by Abstraction** ([Learn More](./modernization-patterns/2-branch-by-abstraction.md))
-    - Suitable to modernize component that are deeper in the call stack with upstream dependencies.
-    - Example
+  - Suitable to modernize component that are deeper in the call stack with upstream dependencies.
+  - Example
 
-        ![branch-by-abstraction-tldr](./diagrams/branch-by-abstraction-tldr.png)
+    ![branch-by-abstraction-tldr](./diagrams/branch-by-abstraction-tldr.png)
 
 </details>
 
 <br/>
 
 ## Modernization Tips
+
 <details>
 <summary>click to expand</summary>
 
