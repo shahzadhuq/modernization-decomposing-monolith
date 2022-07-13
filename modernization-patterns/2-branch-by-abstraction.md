@@ -12,7 +12,7 @@ On the contrary, using Strangler Fig pattern would require changes to upstream c
 
 1. Identify monolith components with upstream dependencies.
 1. Create an abstraction layer for the component to be replaced and restructure the system to use this abstraction.
-1. Along the existing implementaiton, incrementally create new implementation (port functionlity over).
+1. Along the existing implementation, incrementally create new implementation (port functionality over).
 1. When ready, switch abstraction over to new implementation.
 
 ## Pattern Benefits
