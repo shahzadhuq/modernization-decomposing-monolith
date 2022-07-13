@@ -25,26 +25,26 @@ On the contrary, using Strangler Fig pattern would require changes to upstream c
 
 1. Create an abstraction layer that represents the interactions between the code to be modernized and its clients (the callers of this code.). For example, in C#, create an Interface based on the existing functionality that you want to modernize.
 
-    ![branch-by-abstraction-add-interface](../diagrams/branch-by-abstraction-add-interface.png)
+    ![branch-by-abstraction-interface-introduced](../diagrams/branch-by-abstraction-interface-introduced.png)
 
 1. With the abstraction in place, in small increments, you need to change the existing clients to use the new abstraction. This may require searching your codebase for calls being made to APIs related to the notification component.
 
     Diagram below shows incremental client update.
 
-    ![branch-by-abstraction-incremental-updates](../diagrams/branch-by-abstraction-clients-incremental-updates.png)
+    ![branch-by-abstraction-interface-incorporated](../diagrams/branch-by-abstraction-interface-incorporated.png)
 
     Diagram below shows client updates completed.
 
-    ![branch-by-abstraction-completed-updates](../diagrams/branch-by-abstraction-clients-completed-updates.png)
+    ![branch-by-abstraction-interface-completed](../diagrams/branch-by-abstraction-interface-completed.png)
 
 1. Create new implementation (modernized version) of the abstraction.
     1. New implementation will likely exist outside your monolith, hosted under the modernized architecture. 
-    1. Inside your monolith, you will have a client - acting as shell - calling out to the new implementation.
-    1. Build incremental port of Notification functionality, new implementation can continue to stay dormant until tested and ready.
+    1. Inside your monolith, you will have a client - acting as broker - calling out to the new implementation.
+    1. In small increments, port Notification functionality to new implementation which will stay inactive until tested and ready.
 
     Diagram below shows the process.
 
-    ![branch-by-abstraction-new-implementation-wip](../diagrams/branch-by-abstraction-new-implementation-wip.png)
+    ![branch-by-abstraction-new-implementation-inprogress](../diagrams/branch-by-abstraction-new-implementation-inprogress.png)
 
 1. When ready, switch your abstraction over to use the new implementation.
     1. You would want to use a switching mechanism that can be toggled easily (e.g. Feature Toggle). In case of any problems, this allows you to quickly switch back to the old functionality.
@@ -56,7 +56,7 @@ On the contrary, using Strangler Fig pattern would require changes to upstream c
 
     ![branch-by-abstraction-new-implementation-completed](../diagrams/branch-by-abstraction-new-implementation-completed.png)
 
-1. Optionally, you could remove the Abstraction layer (Interface).
+1. Optionally, you could remove the Abstraction layer (Interface) as well.
 
 1. Rinse and repeat the previous steps, shipping your system in the meantime if desired.
 
